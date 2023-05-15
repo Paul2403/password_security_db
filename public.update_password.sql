@@ -15,6 +15,7 @@ secondScheduleId integer;
 eventId                 integer;
 error                   smallint;
 message                 text;
+msg						varchar;
 responsejson            jsonb;
 response			    json;
 refrenceId              integer;
@@ -29,7 +30,7 @@ tempArray				jsonb;
 tempPassword			varchar;
 currPass				json;
 
--- select update_password('{"id":1,"passwd":"kithu"}')
+-- select update_password('{"otp":"fdsfse","id":1,"passwd":"kithu"}')
 begin
 	error = 0;
 -- 	message = '';
@@ -71,7 +72,8 @@ begin
 		
 		--construction of the response data from the database.
 		responseJson = (select row_to_json(t) FROM (Select * FROM public.login_credentials where id= (params->>'id')::int)t);
-		response = (select row_to_json(t) FROM (Select 200 as "status", responseJson as "data")t);
+		msg = 'Password Successfully Updated!';
+		response = (select row_to_json(t) FROM (Select 200 as "status", msg as "data")t);
 		END IF;
 -- 		RAISE EXCEPTION '%',message;
 	END IF;
